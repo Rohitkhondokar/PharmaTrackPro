@@ -1,0 +1,71 @@
+@model PharmaTrackPro.ViewModels.Supplier.SupplierFormViewModel
+
+<div class="modal fade" id="supplierModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="supplierForm" novalidate>
+                @Html.AntiForgeryToken()
+                <input type="hidden" id="Id" name="Id" value="0" />
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="supplierModalTitle">Add Supplier</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="Name" class="form-label">Supplier Name</label>
+                        <input type="text" class="form-control" id="Name" name="Name" maxlength="150" required />
+                        <span class="text-danger small" id="NameError"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="ContactPerson" class="form-label">Contact Person</label>
+                        <input type="text" class="form-control" id="ContactPerson" name="ContactPerson" maxlength="100" />
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="Phone" class="form-label">Phone</label>
+                            <input type="text" class="form-control" id="Phone" name="Phone" maxlength="20" />
+                            <span class="text-danger small" id="PhoneError"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="Email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="Email" name="Email" maxlength="150" />
+                            <span class="text-danger small" id="EmailError"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="Address" class="form-label">Address</label>
+                        <textarea class="form-control" id="Address" name="Address" rows="2" maxlength="300"></textarea>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="LicenseNumber" class="form-label">License / Registration Number</label>
+                            <input type="text" class="form-control" id="LicenseNumber" name="LicenseNumber" maxlength="50" />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="PaymentTerms" class="form-label">Payment Terms</label>
+                            <input type="text" class="form-control" id="PaymentTerms" name="PaymentTerms" maxlength="50" placeholder="e.g. Net 30" />
+                        </div>
+                    </div>
+
+                    <div class="form-check form-switch">
+                        <input type="checkbox" class="form-check-input" id="IsActive" name="IsActive" checked />
+                        <label class="form-check-label" for="IsActive">Active</label>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="btnSaveSupplier">
+                        <i class="fa-solid fa-floppy-disk"></i> Save
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

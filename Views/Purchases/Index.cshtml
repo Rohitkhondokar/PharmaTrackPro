@@ -1,0 +1,48 @@
+@{
+    ViewData["Title"] = "Purchases";
+    var canManage = User.IsInRole("Administrator") || User.IsInRole("StoreManager");
+}
+
+<div class="page-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+    <div>
+        <h2>Purchases</h2>
+        <p class="text-muted mb-0">Purchase orders placed with suppliers.</p>
+    </div>
+
+    @if (canManage)
+    {
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="fa-solid fa-plus"></i> New Purchase Order
+        </a>
+    }
+</div>
+
+<div class="alert alert-info">
+    <i class="fa-solid fa-circle-info"></i>
+    A purchase order starts as <strong>Pending</strong> — no stock is added yet. Click <strong>Receive</strong> once the goods
+    physically arrive to create stock batches. Only pending orders can be cancelled; a received order needs a Purchase Return instead.
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <table id="purchasesTable" class="table table-hover align-middle w-100">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Supplier</th>
+                    <th>Invoice #</th>
+                    <th>Date</th>
+                    <th>Items</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/purchases-index.js" asp-append-version="true"></script>
+}

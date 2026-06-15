@@ -1,0 +1,61 @@
+@model PharmaTrackPro.Models.PurchaseReturn
+@{
+    ViewData["Title"] = $"Return #{Model.Id}";
+}
+
+<div class="page-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+    <div>
+        <h2>Purchase Return #@Model.Id</h2>
+        <p class="text-muted mb-0">
+            Against <a asp-controller="Purchases" asp-action="Details" asp-route-id="@Model.PurchaseId">Purchase #@Model.PurchaseId</a>
+            &middot; @Model.Purchase?.Supplier?.Name &middot; @Model.ReturnDate.ToString("MMM dd, yyyy")
+        </p>
+    </div>
+    <a asp-action="Index" class="btn btn-outline-secondary">
+        <i class="fa-solid fa-arrow-left"></i> Back to Returns
+    </a>
+</div>
+
+<div class="card border-0 shadow-sm mb-3">
+    <div class="card-body">
+        <div class="text-muted small">Reason</div>
+        <div>@Model.Reason</div>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <h6 class="mb-3">Returned Items</h6>
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead>
+                    <tr>
+                        <th>Medicine</th>
+                        <th>Batch #</th>
+                        <th class="text-end">Qty Returned</th>
+                        <th class="text-end">Unit Cost</th>
+                        <th class="text-end">Refund</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Items)
+                    {
+                        <tr>
+                            <td>@item.Batch?.Medicine?.Name</td>
+                            <td class="font-monospace small">@item.Batch?.BatchNumber</td>
+                            <td class="text-end">@item.Quantity</td>
+                            <td class="text-end">@item.UnitCost.ToString("C")</td>
+                            <td class="text-end fw-semibold">@item.Subtotal.ToString("C")</td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4" class="text-end fw-bold">Total Refund</td>
+                        <td class="text-end fw-bold">@Model.TotalRefundAmount.ToString("C")</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>

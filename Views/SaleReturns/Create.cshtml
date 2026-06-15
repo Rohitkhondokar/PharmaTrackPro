@@ -1,0 +1,97 @@
+@model PharmaTrackPro.ViewModels.SaleReturn.SaleReturnCreateViewModel
+@{
+    ViewData["Title"] = "New Sale Return";
+}
+
+<div class="page-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+    <div>
+        <h2>New Sale Return</h2>
+        <p class="text-muted mb-0">Returning items from Sale #@Model.SaleId &middot; @Model.CustomerName</p>
+    </div>
+    <a asp-controller="Sales" asp-action="Details" asp-route-id="@Model.SaleId" class="btn btn-outline-secondary">
+        <i class="fa-solid fa-arrow-left"></i> Back to Sale
+    </a>
+</div>
+
+<form id="returnForm" novalidate>
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="SaleId" value="@Model.SaleId" />
+
+    <div class="card border-0 shadow-sm mb-3">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="ReturnDate" class="form-label">Return Date</label>
+                    <input type="date" class="form-control" id="ReturnDate" value="@DateTime.Today.ToString("yyyy-MM-dd")" required />
+                </div>
+                <div class="col-md-8 mb-3">
+                    <label for="Reason" class="form-label">Reason for Return</label>
+                    <input type="text" class="form-control" id="Reason" maxlength="500" placeholder="e.g. Customer changed their mind, adverse reaction" required />
+                    <span class="text-danger small" id="ReasonError"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm mb-3">
+        <div class="card-body">
+            <h6 class="mb-3">Items Eligible for Return</h6>
+            <span class="text-danger small" id="ItemsError"></span>
+
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Medicine</th>
+                            <th>Batch #</th>
+                            <th class="text-end">Sold</th>
+                            <th class="text-end">Already Returned</th>
+                            <th class="text-end">Eligible</th>
+                            <th class="text-end">Unit Price</th>
+                            <th style="width: 130px;">Return Qty</th>
+                            <th class="text-end">Refund</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.ReturnableItems)
+                        {
+                            <tr class="return-row"
+                                data-sale-item-id="@item.SaleItemId"
+                                data-max="@item.Returnable"
+                                data-price="@item.UnitPrice">
+                                <td>@item.MedicineName</td>
+                                <td class="font-monospace small">@item.BatchNumber</td>
+                                <td class="text-end">@item.OriginalQuantity</td>
+                                <td class="text-end">@item.AlreadyReturned</td>
+                                <td class="text-end">@item.Returnable</td>
+                                <td class="text-end">@item.UnitPrice.ToString("C")</td>
+                                <td>
+                                    <input type="number" class="form-control form-control-sm return-qty-input"
+                                           min="0" max="@item.Returnable" value="0" />
+                                </td>
+                                <td class="text-end refund-cell">$0.00</td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="7" class="text-end fw-bold">Total Refund</td>
+                            <td class="text-end fw-bold" id="grandTotal">$0.00</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-end gap-2 mb-4">
+        <a asp-controller="Sales" asp-action="Details" asp-route-id="@Model.SaleId" class="btn btn-outline-secondary">Cancel</a>
+        <button type="submit" class="btn btn-primary" id="btnSaveReturn">
+            <i class="fa-solid fa-rotate-left"></i> Save Return
+        </button>
+    </div>
+</form>
+
+@section Scripts {
+    <script src="~/js/sale-returns-create.js" asp-append-version="true"></script>
+}

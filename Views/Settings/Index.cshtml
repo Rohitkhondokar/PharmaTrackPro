@@ -1,0 +1,84 @@
+@model PharmaTrackPro.ViewModels.Settings.PharmacySettingsFormViewModel
+@{
+    ViewData["Title"] = "System Settings";
+    DateTime updatedAt = ViewBag.UpdatedAt;
+    string? updatedByName = ViewBag.UpdatedByName;
+}
+
+<div class="page-header">
+    <h2>System Settings</h2>
+    <p class="text-muted mb-0">Pharmacy contact info and stock thresholds. Administrator only.</p>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <form id="settingsForm" novalidate>
+            @Html.AntiForgeryToken()
+
+            <h6 class="mb-3">Pharmacy Details</h6>
+            <p class="text-muted small">Used on printed sales receipts.</p>
+
+            <div class="mb-3">
+                <label for="PharmacyName" class="form-label">Pharmacy Name</label>
+                <input type="text" class="form-control" id="PharmacyName" maxlength="150" value="@Model.PharmacyName" required />
+                <span class="text-danger small" id="PharmacyNameError"></span>
+            </div>
+
+            <div class="mb-3">
+                <label for="Address" class="form-label">Address</label>
+                <textarea class="form-control" id="Address" rows="2" maxlength="300">@Model.Address</textarea>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="Phone" class="form-label">Phone</label>
+                    <input type="text" class="form-control" id="Phone" maxlength="20" value="@Model.Phone" />
+                    <span class="text-danger small" id="PhoneError"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="Email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="Email" maxlength="150" value="@Model.Email" />
+                    <span class="text-danger small" id="EmailError"></span>
+                </div>
+            </div>
+
+            <hr class="my-4" />
+
+            <h6 class="mb-3">Stock Thresholds</h6>
+            <p class="text-muted small">Drives the Low Stock and Near Expiry flags shown across Inventory, Expiry Management, the Dashboard, and Notifications.</p>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="LowStockThreshold" class="form-label">Low Stock Threshold</label>
+                    <input type="number" class="form-control" id="LowStockThreshold" min="0" max="10000" value="@Model.LowStockThreshold" required />
+                    <div class="form-text">Medicines at or below this total quantity are flagged as low stock.</div>
+                    <span class="text-danger small" id="LowStockThresholdError"></span>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="NearExpiryDaysThreshold" class="form-label">Near Expiry Threshold (days)</label>
+                    <input type="number" class="form-control" id="NearExpiryDaysThreshold" min="1" max="720" value="@Model.NearExpiryDaysThreshold" required />
+                    <div class="form-text">Batches expiring within this many days are flagged as near expiry.</div>
+                    <span class="text-danger small" id="NearExpiryDaysThresholdError"></span>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="CurrencySymbol" class="form-label">Currency Symbol</label>
+                    <input type="text" class="form-control" id="CurrencySymbol" maxlength="10" value="@Model.CurrencySymbol" required />
+                    <span class="text-danger small" id="CurrencySymbolError"></span>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center border-top pt-3 mt-2">
+                <span class="text-muted small">
+                    Last updated @updatedAt.ToString("MMM dd, yyyy HH:mm")@(string.IsNullOrEmpty(updatedByName) ? "" : $" by {updatedByName}")
+                </span>
+                <button type="submit" class="btn btn-primary" id="btnSaveSettings">
+                    <i class="fa-solid fa-floppy-disk"></i> Save Settings
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/settings.js" asp-append-version="true"></script>
+}

@@ -1,0 +1,21 @@
+## .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
+
+## Logs
+Logs/
+
+## Uploads (keep folder, ignore contents)
+wwwroot/uploads/*
+!wwwroot/uploads/.gitkeep
+
+## Environment secrets
+appsettings.Production.json
+*.pfx
+
+## Rider / VS Code
+.idea/
+.vscode/

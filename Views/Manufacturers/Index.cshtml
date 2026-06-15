@@ -1,0 +1,64 @@
+@{
+    ViewData["Title"] = "Manufacturers";
+    var canManage = User.IsInRole("Administrator") || User.IsInRole("StoreManager");
+}
+
+<div class="page-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+    <div>
+        <h2>Manufacturers</h2>
+        <p class="text-muted mb-0">Pharmaceutical companies that supply the medicines you stock.</p>
+    </div>
+
+    @if (canManage)
+    {
+        <button type="button" class="btn btn-primary" id="btnAddManufacturer">
+            <i class="fa-solid fa-plus"></i> Add Manufacturer
+        </button>
+    }
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+            @if (canManage)
+            {
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="chkShowDeleted">
+                    <label class="form-check-label small" for="chkShowDeleted">Show deleted manufacturers</label>
+                </div>
+            }
+            else
+            {
+                <span></span>
+            }
+        </div>
+
+        <table id="manufacturersTable" class="table table-hover align-middle w-100">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Contact Person</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                    @if (canManage)
+                    {
+                        <th class="text-end">Actions</th>
+                    }
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+<partial name="_ManufacturerModal" />
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        window.ptCanManageManufacturers = @Html.Raw(canManage.ToString().ToLower());
+    </script>
+    <script src="~/js/manufacturers.js" asp-append-version="true"></script>
+}

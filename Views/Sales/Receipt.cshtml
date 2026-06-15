@@ -1,0 +1,88 @@
+@model PharmaTrackPro.Models.Sale
+@{
+    Layout = null;
+    var settings = (PharmaTrackPro.Models.PharmacySettings)ViewBag.PharmacySettings;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Receipt - Sale #@Model.Id</title>
+    <style>
+        body { font-family: 'Courier New', monospace; max-width: 380px; margin: 20px auto; padding: 0 12px; }
+        .center { text-align: center; }
+        .header h2 { margin: 0; }
+        .header p { margin: 2px 0; font-size: 0.85rem; }
+        hr { border: none; border-top: 1px dashed #999; margin: 10px 0; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+        td, th { padding: 2px 0; }
+        .text-end { text-align: right; }
+        .totals-row td { font-weight: bold; font-size: 1rem; }
+        .print-btn { text-align: center; margin-bottom: 16px; }
+        @@media print {
+            .print-btn { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="print-btn">
+        <button onclick="window.print()">Print Receipt</button>
+    </div>
+
+    <div class="header center">
+        <h2>@settings.PharmacyName</h2>
+        @if (!string.IsNullOrEmpty(settings.Address))
+        {
+            <p>@settings.Address</p>
+        }
+        @if (!string.IsNullOrEmpty(settings.Phone))
+        {
+            <p>@settings.Phone</p>
+        }
+        <p>Sale #@Model.Id &middot; @Model.SaleDate.ToString("MMM dd, yyyy HH:mm")</p>
+        <p>Cashier: @(Model.CashierUser?.FullName ?? "—")</p>
+        <p>Customer: @(Model.Customer?.Name ?? "Walk-in")</p>
+    </div>
+
+    <hr />
+
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th class="text-end">Qty</th>
+                <th class="text-end">Price</th>
+                <th class="text-end">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>@item.Medicine?.Name @(!string.IsNullOrEmpty(item.Medicine?.Strength) ? $"({item.Medicine.Strength})" : "")</td>
+                    <td class="text-end">@item.Quantity</td>
+                    <td class="text-end">@item.UnitPrice.ToString("C")</td>
+                    <td class="text-end">@item.Subtotal.ToString("C")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <hr />
+
+    <table>
+        <tr class="totals-row">
+            <td>Grand Total</td>
+            <td class="text-end">@Model.TotalAmount.ToString("C")</td>
+        </tr>
+        <tr>
+            <td>Payment Method</td>
+            <td class="text-end">@Model.PaymentMethod</td>
+        </tr>
+    </table>
+
+    <hr />
+
+    <p class="center" style="font-size: 0.8rem;">Thank you for your purchase!</p>
+</body>
+</html>

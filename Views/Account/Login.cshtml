@@ -1,0 +1,47 @@
+@model LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+    Layout = "_LoginLayout";
+}
+
+<div class="auth-card">
+    <h4 class="auth-title">Sign in to your account</h4>
+    <p class="auth-subtitle">Enter your credentials to access PharmaTrack Pro.</p>
+
+    <form asp-controller="Account" asp-action="Login" method="post" novalidate>
+        <input type="hidden" asp-for="ReturnUrl" />
+
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 px-3 small"></div>
+
+        <div class="mb-3">
+            <label asp-for="Email" class="form-label"></label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="fa-solid fa-envelope"></i></span>
+                <input asp-for="Email" class="form-control" placeholder="you@pharmacy.com" autocomplete="username" />
+            </div>
+            <span asp-validation-for="Email" class="text-danger small"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Password" class="form-label"></label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
+                <input asp-for="Password" class="form-control" placeholder="••••••••" autocomplete="current-password" />
+            </div>
+            <span asp-validation-for="Password" class="text-danger small"></span>
+        </div>
+
+        <div class="form-check mb-3">
+            <input asp-for="RememberMe" class="form-check-input" />
+            <label asp-for="RememberMe" class="form-check-label"></label>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">
+            <i class="fa-solid fa-right-to-bracket"></i> Sign In
+        </button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

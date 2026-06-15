@@ -1,0 +1,46 @@
+@{
+    ViewData["Title"] = "Users & Roles";
+}
+
+<div class="page-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+    <div>
+        <h2>Users &amp; Roles</h2>
+        <p class="text-muted mb-0">Staff accounts and role assignments. Administrator only.</p>
+    </div>
+    <button type="button" class="btn btn-primary" id="btnAddUser">
+        <i class="fa-solid fa-plus"></i> Add User
+    </button>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="chkShowDeleted">
+                <label class="form-check-label small" for="chkShowDeleted">Show deleted users</label>
+            </div>
+        </div>
+
+        <table id="usersTable" class="table table-hover align-middle w-100">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Last Login</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+<partial name="_UserModal" />
+<partial name="_ResetPasswordModal" />
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/users.js" asp-append-version="true"></script>
+}

@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Purchase Returns";
+}
+
+<div class="page-header">
+    <h2>Purchase Returns</h2>
+    <p class="text-muted mb-0">Stock returned to suppliers from received purchase orders.</p>
+</div>
+
+<div class="alert alert-info">
+    <i class="fa-solid fa-circle-info"></i>
+    Returns are created from a specific purchase's Details page (look for the <strong>Create Return</strong> button on any
+    <span class="badge bg-success">Received</span> order).
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <table id="purchaseReturnsTable" class="table table-hover align-middle w-100">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Purchase</th>
+                    <th>Supplier</th>
+                    <th>Date</th>
+                    <th>Reason</th>
+                    <th>Items</th>
+                    <th>Refund Amount</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/purchase-returns-index.js" asp-append-version="true"></script>
+}

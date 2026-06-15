@@ -1,0 +1,13 @@
+@{
+    ViewData["Title"] = "Access Denied";
+    Layout = "_LoginLayout";
+}
+
+<div class="auth-card text-center">
+    <i class="fa-solid fa-triangle-exclamation text-danger" style="font-size: 2.5rem;"></i>
+    <h4 class="auth-title mt-3">Access Denied</h4>
+    <p class="auth-subtitle">You don't have permission to view this page. If you believe this is a mistake, contact your system administrator.</p>
+    <a asp-controller="Home" asp-action="Index" class="btn btn-primary w-100">
+        <i class="fa-solid fa-house"></i> Back to Dashboard
+    </a>
+</div>

@@ -1,0 +1,46 @@
+@{
+    ViewData["Title"] = "Inventory";
+    var canManage = User.IsInRole("Administrator") || User.IsInRole("StoreManager");
+}
+
+<form id="antiForgeryForm">@Html.AntiForgeryToken()</form>
+
+<div class="page-header">
+    <h2>Inventory</h2>
+    <p class="text-muted mb-0">Current stock levels across all medicines, aggregated from received purchase batches.</p>
+</div>
+
+<div class="alert alert-info">
+    <i class="fa-solid fa-circle-info"></i>
+    Detailed expiry alerts and reporting live in the upcoming <strong>Expiry Management</strong> module — the badges here are a quick heads-up, not the full picture.
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <table id="inventoryTable" class="table table-hover align-middle w-100">
+            <thead>
+                <tr>
+                    <th>Medicine</th>
+                    <th>Category</th>
+                    <th>Manufacturer</th>
+                    <th>Unit</th>
+                    <th class="text-end">In Stock</th>
+                    <th>Flags</th>
+                    <th class="text-end">Selling Price</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+<partial name="_BatchesModal" />
+<partial name="_AdjustStockModal" />
+
+@section Scripts {
+    <script>
+        window.ptCanManageInventory = @Html.Raw(canManage.ToString().ToLower());
+    </script>
+    <script src="~/js/inventory.js" asp-append-version="true"></script>
+}

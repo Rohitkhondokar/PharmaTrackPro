@@ -1,0 +1,100 @@
+@{
+    ViewData["Title"] = "Reports";
+    string defaultFrom = ViewBag.DefaultFrom;
+    string defaultTo = ViewBag.DefaultTo;
+}
+
+<div class="page-header">
+    <h2>Reports</h2>
+    <p class="text-muted mb-0">Export data as PDF or Excel for record-keeping and analysis.</p>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <h6><i class="fa-solid fa-receipt text-primary"></i> Sales Report</h6>
+                <p class="text-muted small">All completed sales within a date range.</p>
+                <form method="get" action="/Reports/SalesReportPdf" target="_blank" class="row g-2 align-items-end">
+                    <div class="col-6">
+                        <label class="form-label small">From</label>
+                        <input type="date" name="from" class="form-control form-control-sm" value="@defaultFrom" required />
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label small">To</label>
+                        <input type="date" name="to" class="form-control form-control-sm" value="@defaultTo" required />
+                    </div>
+                    <div class="col-12 d-flex gap-2 mt-2">
+                        <button type="submit" class="btn btn-sm btn-outline-danger flex-fill">
+                            <i class="fa-solid fa-file-pdf"></i> PDF
+                        </button>
+                        <button type="submit" formaction="/Reports/SalesReportExcel" class="btn btn-sm btn-outline-success flex-fill">
+                            <i class="fa-solid fa-file-excel"></i> Excel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <h6><i class="fa-solid fa-cart-shopping text-primary"></i> Purchase Report</h6>
+                <p class="text-muted small">All purchase orders within a date range.</p>
+                <form method="get" action="/Reports/PurchaseReportPdf" target="_blank" class="row g-2 align-items-end">
+                    <div class="col-6">
+                        <label class="form-label small">From</label>
+                        <input type="date" name="from" class="form-control form-control-sm" value="@defaultFrom" required />
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label small">To</label>
+                        <input type="date" name="to" class="form-control form-control-sm" value="@defaultTo" required />
+                    </div>
+                    <div class="col-12 d-flex gap-2 mt-2">
+                        <button type="submit" class="btn btn-sm btn-outline-danger flex-fill">
+                            <i class="fa-solid fa-file-pdf"></i> PDF
+                        </button>
+                        <button type="submit" formaction="/Reports/PurchaseReportExcel" class="btn btn-sm btn-outline-success flex-fill">
+                            <i class="fa-solid fa-file-excel"></i> Excel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <h6><i class="fa-solid fa-boxes-stacked text-primary"></i> Inventory Report</h6>
+                <p class="text-muted small">Current stock levels for every active medicine, as of right now.</p>
+                <div class="d-flex gap-2 mt-3">
+                    <a href="/Reports/InventoryReportPdf" target="_blank" class="btn btn-sm btn-outline-danger flex-fill">
+                        <i class="fa-solid fa-file-pdf"></i> PDF
+                    </a>
+                    <a href="/Reports/InventoryReportExcel" target="_blank" class="btn btn-sm btn-outline-success flex-fill">
+                        <i class="fa-solid fa-file-excel"></i> Excel
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <h6><i class="fa-solid fa-hourglass-end text-primary"></i> Expiry Report</h6>
+                <p class="text-muted small">Every batch with remaining stock, expired or approaching expiry.</p>
+                <div class="d-flex gap-2 mt-3">
+                    <a href="/Reports/ExpiryReportPdf" target="_blank" class="btn btn-sm btn-outline-danger flex-fill">
+                        <i class="fa-solid fa-file-pdf"></i> PDF
+                    </a>
+                    <a href="/Reports/ExpiryReportExcel" target="_blank" class="btn btn-sm btn-outline-success flex-fill">
+                        <i class="fa-solid fa-file-excel"></i> Excel
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

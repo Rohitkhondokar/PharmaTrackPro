@@ -1,0 +1,107 @@
+@model PharmaTrackPro.Models.Sale
+@{
+    ViewData["Title"] = $"Sale #{Model.Id}";
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-warning">@TempData["ErrorMessage"]</div>
+}
+
+<div class="page-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+    <div>
+        <h2>Sale #@Model.Id</h2>
+        <p class="text-muted mb-0">
+            @(Model.Customer?.Name ?? "Walk-in Customer") &middot; @Model.SaleDate.ToString("MMM dd, yyyy HH:mm")
+            &middot; @Model.PaymentMethod &middot; Cashier: @(Model.CashierUser?.FullName ?? "—")
+        </p>
+    </div>
+    <div class="d-flex gap-2">
+        <a asp-controller="SaleReturns" asp-action="Create" asp-route-saleId="@Model.Id" class="btn btn-outline-warning">
+            <i class="fa-solid fa-rotate-left"></i> Create Return
+        </a>
+        <a asp-action="Receipt" asp-route-id="@Model.Id" target="_blank" class="btn btn-outline-secondary">
+            <i class="fa-solid fa-print"></i> Print Receipt
+        </a>
+        <a asp-action="History" class="btn btn-outline-secondary">
+            <i class="fa-solid fa-arrow-left"></i> Back to History
+        </a>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <h6 class="mb-3">Items Sold</h6>
+        <div class="table-responsive">
+            <table class="table align-middle">
+                <thead>
+                    <tr>
+                        <th>Medicine</th>
+                        <th>Batch #</th>
+                        <th class="text-end">Qty</th>
+                        <th class="text-end">Unit Price</th>
+                        <th class="text-end">Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Items)
+                    {
+                        <tr>
+                            <td>
+                                @item.Medicine?.Name
+                                @if (!string.IsNullOrEmpty(item.Medicine?.Strength))
+                                {
+                                    <span class="text-muted"> (@item.Medicine.Strength)</span>
+                                }
+                            </td>
+                            <td class="font-monospace small">@item.Batch?.BatchNumber</td>
+                            <td class="text-end">@item.Quantity</td>
+                            <td class="text-end">@item.UnitPrice.ToString("C")</td>
+                            <td class="text-end fw-semibold">@item.Subtotal.ToString("C")</td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4" class="text-end fw-bold">Grand Total</td>
+                        <td class="text-end fw-bold">@Model.TotalAmount.ToString("C")</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+@if (Model.Returns != null && Model.Returns.Any())
+{
+    <div class="card border-0 shadow-sm mt-3">
+        <div class="card-body">
+            <h6 class="mb-3">Returns Against This Sale</h6>
+            <table class="table table-sm align-middle">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Date</th>
+                        <th>Reason</th>
+                        <th class="text-end">Refund</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var ret in Model.Returns.OrderByDescending(r => r.ReturnDate))
+                    {
+                        <tr>
+                            <td>#@ret.Id</td>
+                            <td>@ret.ReturnDate.ToString("MMM dd, yyyy")</td>
+                            <td>@ret.Reason</td>
+                            <td class="text-end">@ret.TotalRefundAmount.ToString("C")</td>
+                            <td class="text-end">
+                                <a class="btn btn-sm btn-outline-primary" asp-controller="SaleReturns" asp-action="Details" asp-route-id="@ret.Id">View</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

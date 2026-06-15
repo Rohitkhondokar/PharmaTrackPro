@@ -1,0 +1,58 @@
+@model PharmaTrackPro.ViewModels.User.UserFormViewModel
+
+<div class="modal fade" id="userModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="userForm" novalidate>
+                @Html.AntiForgeryToken()
+                <input type="hidden" id="Id" name="Id" value="" />
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="userModalTitle">Add User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="FullName" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="FullName" name="FullName" maxlength="150" required />
+                        <span class="text-danger small" id="FullNameError"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="Email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="Email" name="Email" maxlength="150" required />
+                        <span class="text-danger small" id="EmailError"></span>
+                    </div>
+
+                    <div class="mb-3" id="passwordGroup">
+                        <label for="Password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="Password" name="Password" minlength="8" />
+                        <span class="text-danger small" id="PasswordError"></span>
+                        <div class="form-text">At least 8 characters. Not shown when editing — use "Reset Password" instead.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="Role" class="form-label">Role</label>
+                        <select class="form-select" id="Role" name="Role" required>
+                            <option value="">-- Select Role --</option>
+                        </select>
+                        <span class="text-danger small" id="RoleError"></span>
+                    </div>
+
+                    <div class="form-check form-switch">
+                        <input type="checkbox" class="form-check-input" id="IsActive" name="IsActive" checked />
+                        <label class="form-check-label" for="IsActive">Active</label>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="btnSaveUser">
+                        <i class="fa-solid fa-floppy-disk"></i> Save
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

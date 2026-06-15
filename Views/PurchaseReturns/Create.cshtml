@@ -1,0 +1,95 @@
+@model PharmaTrackPro.ViewModels.PurchaseReturn.PurchaseReturnCreateViewModel
+@{
+    ViewData["Title"] = "New Purchase Return";
+}
+
+<div class="page-header d-flex align-items-center justify-content-between flex-wrap gap-2">
+    <div>
+        <h2>New Purchase Return</h2>
+        <p class="text-muted mb-0">Returning stock from Purchase #@Model.PurchaseId &middot; @Model.SupplierName</p>
+    </div>
+    <a asp-controller="Purchases" asp-action="Details" asp-route-id="@Model.PurchaseId" class="btn btn-outline-secondary">
+        <i class="fa-solid fa-arrow-left"></i> Back to Purchase
+    </a>
+</div>
+
+<form id="returnForm" novalidate>
+    @Html.AntiForgeryToken()
+    <input type="hidden" id="PurchaseId" value="@Model.PurchaseId" />
+
+    <div class="card border-0 shadow-sm mb-3">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="ReturnDate" class="form-label">Return Date</label>
+                    <input type="date" class="form-control" id="ReturnDate" value="@DateTime.Today.ToString("yyyy-MM-dd")" required />
+                </div>
+                <div class="col-md-8 mb-3">
+                    <label for="Reason" class="form-label">Reason for Return</label>
+                    <input type="text" class="form-control" id="Reason" maxlength="500" placeholder="e.g. Damaged packaging on arrival" required />
+                    <span class="text-danger small" id="ReasonError"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm mb-3">
+        <div class="card-body">
+            <h6 class="mb-3">Batches Available for Return</h6>
+            <span class="text-danger small" id="ItemsError"></span>
+
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Medicine</th>
+                            <th>Batch #</th>
+                            <th>Expiry</th>
+                            <th class="text-end">In Stock</th>
+                            <th class="text-end">Unit Cost</th>
+                            <th style="width: 130px;">Return Qty</th>
+                            <th class="text-end">Refund</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var batch in Model.AvailableBatches)
+                        {
+                            <tr class="batch-row"
+                                data-batch-id="@batch.BatchId"
+                                data-max="@batch.QuantityRemaining"
+                                data-cost="@batch.UnitCost">
+                                <td>@batch.MedicineName</td>
+                                <td class="font-monospace small">@batch.BatchNumber</td>
+                                <td>@batch.ExpiryDate.ToString("MMM yyyy")</td>
+                                <td class="text-end">@batch.QuantityRemaining</td>
+                                <td class="text-end">@batch.UnitCost.ToString("C")</td>
+                                <td>
+                                    <input type="number" class="form-control form-control-sm return-qty-input"
+                                           min="0" max="@batch.QuantityRemaining" value="0" />
+                                </td>
+                                <td class="text-end refund-cell">$0.00</td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="6" class="text-end fw-bold">Total Refund</td>
+                            <td class="text-end fw-bold" id="grandTotal">$0.00</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-end gap-2 mb-4">
+        <a asp-controller="Purchases" asp-action="Details" asp-route-id="@Model.PurchaseId" class="btn btn-outline-secondary">Cancel</a>
+        <button type="submit" class="btn btn-primary" id="btnSaveReturn">
+            <i class="fa-solid fa-rotate-left"></i> Save Return
+        </button>
+    </div>
+</form>
+
+@section Scripts {
+    <script src="~/js/purchase-returns-create.js" asp-append-version="true"></script>
+}

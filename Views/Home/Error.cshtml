@@ -1,0 +1,20 @@
+@model ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+    Layout = "_LoginLayout";
+}
+
+<div class="auth-card text-center">
+    <i class="fa-solid fa-bug text-danger" style="font-size: 2.5rem;"></i>
+    <h4 class="auth-title mt-3">Something went wrong</h4>
+    <p class="auth-subtitle">An unexpected error occurred. It has been logged and will be reviewed.</p>
+
+    @if (Model.ShowRequestId)
+    {
+        <p class="text-muted small">Request ID: <code>@Model.RequestId</code></p>
+    }
+
+    <a asp-controller="Home" asp-action="Index" class="btn btn-primary w-100">
+        <i class="fa-solid fa-house"></i> Back to Dashboard
+    </a>
+</div>

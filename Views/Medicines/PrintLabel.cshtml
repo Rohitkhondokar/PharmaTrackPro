@@ -1,0 +1,51 @@
+@model PharmaTrackPro.Models.Medicine
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Label - @Model.Name</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        .label { display: inline-block; border: 1px dashed #999; padding: 16px 24px; border-radius: 8px; }
+        .label h3 { margin: 0 0 2px; }
+        .label .strength { color: #555; margin-bottom: 10px; }
+        .label img.barcode { max-width: 280px; }
+        .label img.qr { width: 110px; height: 110px; margin-top: 8px; }
+        .label .price { font-size: 1.1rem; font-weight: bold; margin-top: 8px; }
+        .label .barcode-value { letter-spacing: 2px; font-family: monospace; margin-top: 4px; }
+        .print-btn { margin-bottom: 20px; }
+        @@media print {
+            .print-btn { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="print-btn">
+        <button onclick="window.print()">Print Label</button>
+    </div>
+
+    <div class="label">
+        <h3>@Model.Name</h3>
+        @if (!string.IsNullOrEmpty(Model.Strength))
+        {
+            <div class="strength">@Model.Strength</div>
+        }
+
+        @if (!string.IsNullOrEmpty(Model.BarcodeImagePath))
+        {
+            <div><img class="barcode" src="@Model.BarcodeImagePath" alt="Barcode" /></div>
+            <div class="barcode-value">@Model.Barcode</div>
+        }
+
+        @if (!string.IsNullOrEmpty(Model.QrCodeImagePath))
+        {
+            <div><img class="qr" src="@Model.QrCodeImagePath" alt="QR Code" /></div>
+        }
+
+        <div class="price">@Model.SellingPrice.ToString("C")</div>
+    </div>
+</body>
+</html>

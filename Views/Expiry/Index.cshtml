@@ -1,0 +1,60 @@
+@{
+    ViewData["Title"] = "Expiry Management";
+    var canManage = User.IsInRole("Administrator") || User.IsInRole("StoreManager");
+    int nearExpiryDays = ViewBag.NearExpiryDays;
+}
+
+<form id="antiForgeryForm">@Html.AntiForgeryToken()</form>
+
+<div class="page-header">
+    <h2>Expiry Management</h2>
+    <p class="text-muted mb-0">Batches approaching or past their expiry date, across all medicines.</p>
+</div>
+
+<ul class="nav nav-tabs mb-3" id="expiryTabs">
+    <li class="nav-item">
+        <button class="nav-link active" data-filter="expired" type="button">
+            Expired <span class="badge bg-secondary ms-1" id="countExpired">0</span>
+        </button>
+    </li>
+    <li class="nav-item">
+        <button class="nav-link" data-filter="near" type="button">
+            Near Expiry (@nearExpiryDays days) <span class="badge bg-secondary ms-1" id="countNear">0</span>
+        </button>
+    </li>
+    <li class="nav-item">
+        <button class="nav-link" data-filter="all" type="button">
+            All <span class="badge bg-secondary ms-1" id="countAll">0</span>
+        </button>
+    </li>
+</ul>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <table id="expiryTable" class="table table-hover align-middle w-100">
+            <thead>
+                <tr>
+                    <th>Medicine</th>
+                    <th>Batch #</th>
+                    <th>Expiry Date</th>
+                    <th class="text-end">Days</th>
+                    <th class="text-end">Qty Remaining</th>
+                    <th class="text-end">Unit Cost</th>
+                    @if (canManage)
+                    {
+                        <th class="text-end">Actions</th>
+                    }
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        window.ptCanManageExpiry = @Html.Raw(canManage.ToString().ToLower());
+        window.ptNearExpiryDays = @nearExpiryDays;
+    </script>
+    <script src="~/js/expiry.js" asp-append-version="true"></script>
+}
